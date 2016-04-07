@@ -34,7 +34,15 @@ class UnigramModel(NGramModel):
                   symbols to be included as their own tokens in
                   self.nGramCounts. For more details, see the spec.
         """
-        return
+        UniDict = {}
+        for i in range(len(Beatles)):
+            for j in range(len(Beatles[i])):
+                if Beatles[i][j] != '^::^':
+                    if Beatles[i][j] in UniDict:
+                        UniDict[Beatles[i][j]] += 1
+                    else:
+                        UniDict[Beatles[i][j]] = 1
+        return UniDict
 
     def trainingDataHasNGram(self, sentence):
         """
