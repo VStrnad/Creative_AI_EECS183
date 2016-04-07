@@ -104,7 +104,22 @@ class NGramModel(object):
         Effects:  returns a candidate item (a key in the candidates dictionary)
                   based on the algorithm described in the spec.
         """
-        return
+        token = []
+        count = []
+        # make a list of keys and a list of values'''
+        for keyname in candidates:
+            token.append(keyname)
+            count.append(candidates[keyname])
+        # creat a third list
+        cumulative = []
+        cumulative.append(count[0])
+        for i in range(1,len(count)):
+            cumulative.append(cumulative[i - 1] + count[i])
+        random_number = random.randrange(0, cumulative[len(cumulative) - 1])
+        # find the index of the value and return the coresponding token
+        for i in cumulative:
+            if i > random_number:
+                return token[cumulative.index(i)]
 
     def getNextToken(self, sentence):
         """
@@ -116,7 +131,7 @@ class NGramModel(object):
                   For more information on how to put all these functions
                   together, see the spec.
         """
-        return ''
+        return weightedChoice(getCandidateDictionary(sentence))
 
     def getNextNote(self, musicalSentence, possiblePitches):
         """
