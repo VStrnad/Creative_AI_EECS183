@@ -32,9 +32,9 @@ def trainLyricsModels(lyricsDirectory):
     dataLoader = DataLoader()
     dataLoader.loadLyrics(lyricsDirectory) # lyrics stored in dataLoader.lyrics
     models = [TrigramModel(), BigramModel(), UnigramModel()]
-
-    # add rest of trainLyricsModels implementation here
-
+    TrigramModel.trainModel(dataLoader.lyrics)
+    BigramModel.trainModel(dataLoader.lyrics)
+    UnigramModel.trainModel(dataLoader.lyrics)
     return models
 
 def selectNGramModel(models, sentence):
