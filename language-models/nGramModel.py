@@ -48,6 +48,15 @@ class NGramModel(object):
         """
         textCopy = []
 
+        import copy
+        textcopy = copy.deepcopy(text)
+        rows = len(textcopy)
+        cols = len(textcopy[0])
+        for row in textcopy:
+            row.insert(0, '^::^')
+            row.insert(0, '^::^')
+            row.insert(len(row),'$:::$')
+
         # add the rest of your prepData implementation here
 
         return textCopy
