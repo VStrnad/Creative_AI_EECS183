@@ -35,6 +35,16 @@ class BigramModel(NGramModel):
                   symbols to be included as their own tokens in
                   self.nGramCounts. For more details, see the spec.
         """
+        biDict = {}
+        for i in range(len(text)):
+            for j in range(len(text[i]) - 1):
+                if text[i][j] != '^::^':
+                    if text[i][j] in biDict:
+                        if text[i][j + 1] in biDict[text[i][j]]:
+                            biDict[text[i][j]][text[i][j + 1]] += 1
+                    else:
+                        biDict[text[i][j]] = {text[i][j + 1]: 1}
+        print biDict
         return
 
     def trainingDataHasNGram(self, sentence):
