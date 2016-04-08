@@ -46,8 +46,7 @@ class BigramModel(NGramModel):
                             biDict[text[i][j]][text[i][j + 1]] = 1
                     else:
                         biDict[text[i][j]]text[i][j + 1]] = 1
-        print biDict
-        return
+        return biDict
 
     def trainingDataHasNGram(self, sentence):
         """
@@ -71,8 +70,7 @@ class BigramModel(NGramModel):
                   to the current sentence. For details on which words the
                   BigramModel sees as candidates, see the spec.
         """
-        if sentence[len(sentence)-1] in self.nGramCounts:
-            return self.nGramCounts[sentence[len(sentence)-1]
+        return self.nGramCounts[sentence[len(sentence)-1]]
     
             
 
