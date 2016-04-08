@@ -52,7 +52,7 @@ class UnigramModel(NGramModel):
                   the next token for the sentence. For explanations of how this
                   is determined for the UnigramModel, see the spec.
         """
-        return False
+        return bool(self.nGramCounts)
 
     def getCandidateDictionary(self, sentence):
         """
