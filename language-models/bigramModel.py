@@ -45,7 +45,7 @@ class BigramModel(NGramModel):
                         else:
                             biDict[text[i][j]][text[i][j + 1]] = 1
                     else:
-                        biDict[text[i][j]]text[i][j + 1]] = 1
+                        biDict[text[i][j]][text[i][j + 1]] = 1
         return biDict
 
     def trainingDataHasNGram(self, sentence):

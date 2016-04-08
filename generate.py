@@ -79,7 +79,7 @@ def generateSentence(models, desiredLength):
     """
     sentence = ['^::^', '^:::^']
     modelSelected = selectNGramModel(models, sentence)
-    while sentenceTooLong == False or modelSelected.nexttoken !=  '$::$':
+    while sentenceTooLong(5, len(sentence)) == False or modelSelected.nexttoken !=  '$::$':
         sentence.append(modelSelected.getNextToken)
     sentence.remove('^::^')
     sentence.remove('^:::^')
@@ -252,12 +252,12 @@ def main():
 
 
 if __name__ == '__main__':
-    #  main()
+    main()
     # note that if you want to individually test functions from this file,
     # you can comment out main() and call those functions here. Just make
     # sure to call main() in your final submission of the project!
-    
+    """
     a = UnigramModel()
     runLyricsGenerator(a)
-
+    """
 
