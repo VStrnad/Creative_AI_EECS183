@@ -28,13 +28,10 @@ def trainLyricsModels(lyricsDirectory):
         should be in tri-, then bi-, then unigramModel order.
         
         Returns the list of trained models.
-        """
+    """
     dataLoader = DataLoader()
     dataLoader.loadLyrics(lyricsDirectory) # lyrics stored in dataLoader.lyrics
     models = [TrigramModel(), BigramModel(), UnigramModel()]
-    
-    # add rest of trainLyricsModels implementation here
-    
     return models
 
 def selectNGramModel(models, sentence):
@@ -47,8 +44,7 @@ def selectNGramModel(models, sentence):
         based on the n-grams that the models know. (Remember that you
         wrote a function that checks if a model can be used to pick a
         word for a sentence!)
-        """
-    
+    """
     if models[0].trainingDataHasNGram:
         return models[0]
     elif models[1].trainingDataHasNGram:
@@ -63,7 +59,7 @@ def sentenceTooLong(desiredLength, currentLength):
         Effects:  returns a bool indicating whether or not this sentence should
         be ended based on its length. This function has been done for
         you.
-        """
+    """
     STDEV = 1
     val = random.gauss(currentLength, STDEV)
     return val > desiredLength
@@ -80,13 +76,10 @@ def generateSentence(models, desiredLength):
         
         For more details about generating a sentence using the
         NGramModels, see the spec.
-        """
+    """
     sentence = ['^::^', '^:::^']
-    models = UnigramModel()
-    word = 'hi'
-    # add rest of generateSentence implementation here
-    while sentenceTooLong == False or models.nexttoken !=  '$::$':
-        modelSelected = selectNGramModel(models, sentence)
+    modelSelected = selectNGramModel(models, sentence)
+    while sentenceTooLong == False or modelSelected.nexttoken !=  '$::$':
         sentence.append(modelSelected.getNextToken)
     sentence.remove('^::^')
     sentence.remove('^:::^')
@@ -98,12 +91,12 @@ def printSongLyrics(verseOne, verseTwo, chorus):
         Modifies: nothing
         Effects:  prints the song. This function is done for you.
         """
-verses = [verseOne, chorus, verseTwo, chorus]
-print '\n',
-for verse in verses:
-    for line in verse:
-        print (' '.join(line)).capitalize()
+    verses = [verseOne, chorus, verseTwo, chorus]
     print '\n',
+    for verse in verses:
+        for line in verse:
+            print (' '.join(line)).capitalize()
+        print '\n',
 
 def runLyricsGenerator(models):
     """
@@ -200,61 +193,61 @@ def getUserInput(teamName, lyricsSource, musicSource):
         '(1) Generate song lyrics by ' + lyricsSource + '\n' \
             '(2) Generate a song using data from ' + musicSource + '\n' \
                 '(3) Quit the music generator\n'
-prompt = 'prompt'
+    prompt = 'prompt'
 
-userInput = -1
-while userInput < 1 or userInput > 3:
-    print prompt
-    userInput = raw_input('Please enter a choice between 1 and 3: ')
-    try:
-        userInput = int(userInput)
-    except ValueError:
-        userInput = -1
+    userInput = -1
+    while userInput < 1 or userInput > 3:
+        print prompt
+        userInput = raw_input('Please enter a choice between 1 and 3: ')
+        try:
+            userInput = int(userInput)
+        except ValueError:
+            userInput = -1
 
-#return userInput
-#
-# def main():
-#     """
-#     Requires: nothing
-#     Modifies: nothing
-#     Effects:  this is your main function, which is done for you. It runs the
-#               entire generator program for both the reach and the core.
-#               It begins by loading the lyrics and music data, then asks the
-#               user to input a choice to generate either lyrics or music.
-#
-#               Note that for the core, only choice 1 (the lyrics generating
-#               choice) needs to be completed; if the user inputs 2, you
-#               can just have the runMusicGenerator function print "Under
-#               construction."
-#
-#               Also note that you can change the values of the first five
-#               variables based on your team's name, artist name, etc.
-#     """
-#     teamName = 'Team Name'
-#     lyricsSource = 'The Beatles'
-#     musicSource = 'Nintendo Gamecube'
-#     lyricsDirectory = 'the_beatles'
-#     musicDirectory = 'gamecube'
-#
-#     print 'Starting program and loading data...'
-#     lyricsModels = trainLyricsModels(lyricsDirectory)
-#     musicModels = trainMusicModels(musicDirectory)
-#     print 'Data successfully loaded\n'
-#
-#     userInput = getUserInput(teamName, lyricsSource, musicSource)
-#
-#     while userInput != 3:
-#         print '\n',
-#         if userInput == 1:
-#             runLyricsGenerator(lyricsModels)
-#         elif userInput == 2:
-#             songName = raw_input('What would you like to name your song? ')
-#             runMusicGenerator(musicModels, 'wav/' + songName + '.wav')
-#
-#         print '\n',
-#         userInput = getUserInput(teamName, lyricsSource, musicSource)
-#
-#     print '\nThank you for using the', teamName, 'music generator!'
+    return userInput
+
+def main():
+    """
+    Requires: nothing
+    Modifies: nothing
+    Effects:  this is your main function, which is done for you. It runs the
+              entire generator program for both the reach and the core.
+              It begins by loading the lyrics and music data, then asks the
+              user to input a choice to generate either lyrics or music.
+
+              Note that for the core, only choice 1 (the lyrics generating
+              choice) needs to be completed; if the user inputs 2, you
+              can just have the runMusicGenerator function print "Under
+              construction."
+
+              Also note that you can change the values of the first five
+              variables based on your team's name, artist name, etc.
+    """
+    teamName = 'Team Name'
+    lyricsSource = 'The Beatles'
+    musicSource = 'Nintendo Gamecube'
+    lyricsDirectory = 'the_beatles'
+    musicDirectory = 'gamecube'
+
+    print 'Starting program and loading data...'
+    lyricsModels = trainLyricsModels(lyricsDirectory)
+    musicModels = trainMusicModels(musicDirectory)
+    print 'Data successfully loaded\n'
+
+    userInput = getUserInput(teamName, lyricsSource, musicSource)
+
+    while userInput != 3:
+        print '\n',
+        if userInput == 1:
+            runLyricsGenerator(lyricsModels)
+        elif userInput == 2:
+            songName = raw_input('What would you like to name your song? ')
+            runMusicGenerator(musicModels, 'wav/' + songName + '.wav')
+
+        print '\n',
+        userInput = getUserInput(teamName, lyricsSource, musicSource)
+
+        print '\nThank you for using the', teamName, 'music generator!'
 
 
 
