@@ -4,48 +4,31 @@
 # with our test cases, run the file called runTests.py, which can be found in
 # the warmup/ directory.
 
+D = {'Oregon' : 'OR', 'Florida' : 'FL' , 'California' : 'CA' , 'New York' : 'NY' , 'Michigan' : 'MI'}
+
 def returnDictionary(D):
-    """
-    Requires: Nothing
-    Modifies: Nothing
-    Effects:  Returns the input dictionary D unchanged.
-    """
-    return
+	return D
 
-def keyInDict(D, K):
-    """
-    Requires: D is a dictionary
-    Modifies: Nothing
-    Effects:  Returns True if and only if the key K is already in D.
-    """
-    return
 
-def returnKeyVal(D, K):
-    """
-    Requires: D is a dictionary and K is a key in D
-    Modifies: Nothing
-    Effects:  Returns the value associated with K in the dictionary D.
-    """
-    return
+print returnDictionary(D)
 
-def setKeyVal(D, K, V):
-    """
-    Requires: D is a dictionary
-    Modifies: D
-    Effects:  Sets the value associated with the key K in the dictionary D
-              to be the value V. Returns the dictionary D.
-    """
-    return
+def keyInDict(D,K):
+	if K in D:
+		return True
 
-def setKeyValList(D, K, V1, V2, V3, V4):
-    """
-    Requires: D is a dictionary
-    Modifies: D
-    Effects:  Sets the value associated with the key K, which is a key in
-              the input dictionary D, to be a list composed of V1 through
-              V4, in that order. Returns the dictionary D.
-    """
-    return
+print keyInDict(D, 'New York')
+
+D['K'] = 'New York'
+
+
+def returnKeyVal(D,K):
+	return D[K]
+
+
+
+
+
+
 
 def asciiAssociate():
     """
@@ -56,17 +39,41 @@ def asciiAssociate():
               the associated ascii values from 97 to 122. Returns the
               dictionary asciiDict.
     """
-    return
+    asciiDict = {'a': 97,
+                 'b': 98,
+                 'c': 99,
+                 'd': 100,
+                 'e': 101,
+                 'f': 102,
+                 'g': 103,
+                 'h': 104,
+                 'i': 105,
+                 'j': 106,
+                 'k': 107,
+                 'l': 108,
+                 'm': 109,
+                 'n': 110,
+                 'o': 111,
+                 'p': 112,
+                 'q': 113,
+                 'r': 114,
+                 's': 115,
+                 't': 116,
+                 'u': 117,
+                 'v': 118,
+                 'w': 119,
+                 'x': 120,
+                 'y': 121,
+                 'z': 122        
+    }
+    return asciiDict
+    
 
-def getColor(favoriteColors, name):
-    """
-    Requires: favoriteColors is a dictionary and name is a key in
-              favoriteColors
-    Modifies: Nothing
-    Effects:  Returns the first element in the list associated with the
-              key "name" in the input dictionary favoriteColors.
-    """
-    return
+
+
+
+
+# In[103]:
 
 def translate(vocab, word, language):
     """
@@ -78,7 +85,11 @@ def translate(vocab, word, language):
               Given the input dictionary, this function returns the
               value associated with the input word and language.
     """
-    return
+              
+    return vocab[word][language]
+
+
+
 
 def nestedDictionary():
     """
@@ -88,18 +99,22 @@ def nestedDictionary():
               lowercase characters from a to z, and each key has a value
               of an empty dictionary. Returns the new dictionary D.
     """
-    return
+    i=0
+    D = {}
+    for key in range(26):
+        D[key] = chr(97+key)
+    D = dict((v,k) for k,v in D.iteritems())
+    for key, value in D.items():
+        D[key] = {}
+    return D
 
-def nestedDictionary3D(L1, L2):
-    """
-    Requires: L1 and L2 are lists
-    Modifies: Nothing
-    Effects:  Creates a 3D dictionary, D, with keys of each item of list L1.
-              The value for each key in D is a dictionary, which
-              has keys of each item of list L2 and corresponding
-              values of empty dictionaries. Returns the new dictionary D.
-    """
-    return
+
+# In[76]:
+
+
+
+
+# In[77]:
 
 def valueFrom3D(D, K1, K2, K3):
     """
@@ -111,7 +126,14 @@ def valueFrom3D(D, K1, K2, K3):
               with the innermost dictionary accessed using keys K1, K2, and K3,
               in that order.
     """
-    return
+    
+    return D[K1[K2[K3]]]
+    
+D = {'K1':{'K2':{'K3':'value'}}}
+
+
+
+# In[88]:
 
 def keysIn2D(D, L1, L2):
     """
@@ -122,7 +144,16 @@ def keysIn2D(D, L1, L2):
               is associated with a dictionary that contains the last
               item of list L2 as a key.
     """
-    return
+    # Last item of L1: L1[len(L1)-1]
+    if L1[len(L1)-1] in D.keys():
+        temp1 =  L1[len(L1)-1]
+        if L2[len(L2)-1] in D[L1[len(L1)-1]].keys():
+            return True
+
+
+# In[ ]:
+
+
 
 
 
