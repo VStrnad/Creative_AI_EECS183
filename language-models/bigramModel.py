@@ -55,7 +55,10 @@ class BigramModel(NGramModel):
                   the next token for the sentence. For explanations of how this
                   is determined for the BigramModel, see the spec.
         """
-        return False
+        if sentence[len(sentence) - 1] in self.nGramCounts:
+            return True
+        else:
+            return False
 
     def getCandidateDictionary(self, sentence):
         """
