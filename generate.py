@@ -116,20 +116,18 @@ def runLyricsGenerator(models):
     verseTwo = []
     chorus = []
 
-# add rest of runLyricsGenerator implementation here
 
-for i in range(4):
-    verseOne[i] = generateSentence(models, 5)
+    for i in range(4):
+        verseOne[i] = generateSentence(models, 5)
 
-for i in range(4):
-    verseTwo[i] = generateSentence(models, 5)
+    for i in range(4):
+        verseTwo[i] = generateSentence(models, 5)
 
-for i in range(4):
-    chorus[i] = generateSentence(models, 5)
+    for i in range(4):
+        chorus[i] = generateSentence(models, 5)
 
-printSongLyrics(verseOne,verseTwo,chorus)
+    printSongLyrics(verseOne,verseTwo,chorus)
 
-return
 
 
 
