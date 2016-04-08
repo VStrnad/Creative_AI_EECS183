@@ -75,7 +75,7 @@ class TrigramModel(NGramModel):
                   to the current sentence. For details on which words the
                   TrigramModel sees as candidates, see the spec.
         """
-        return {}
+        return self.nGramCounts[sentence[len(sentece) - 2]][sentence[len(sentece) - 1]]
 
 
 # -----------------------------------------------------------------------------
