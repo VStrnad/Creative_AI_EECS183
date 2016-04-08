@@ -119,7 +119,7 @@ def runLyricsGenerator(models):
 # add rest of runLyricsGenerator implementation here
 
 for i in range(4):
-    verseOne[i]] = generateSentence(models, 5)
+    verseOne[i] = generateSentence(models, 5)
 
 for i in range(4):
     verseTwo[i] = generateSentence(models, 5)
