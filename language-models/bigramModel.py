@@ -43,7 +43,7 @@ class BigramModel(NGramModel):
                         if text[i][j + 1] in biDict[text[i][j]]:
                             biDict[text[i][j]][text[i][j + 1]] += 1
                     else:
-                        biDict[text[i][j]] = {text[i][j + 1]: 1}
+                        biDict[text[i][j]]text[i][j + 1]] = 1
         print biDict
         return
 
