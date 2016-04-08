@@ -25,10 +25,39 @@ def returnKeyVal(D,K):
 	return D[K]
 
 
+def setKeyVal(D, K, V):
+    """
+    Requires: D is a dictionary
+    Modifies: D
+    Effects:  Sets the value associated with the key K in the dictionary D
+              to be the value V. Returns the dictionary D.
+    """
+    D['K'] = 'V'
+    return D
+
+def setKeyValList(D, K, V1, V2, V3, V4):
+    """
+    Requires: D is a dictionary
+    Modifies: D
+    Effects:  Sets the value associated with the key K, which is a key in
+              the input dictionary D, to be a list composed of V1 through
+              V4, in that order. Returns the dictionary D.
+    """
+
+    D['K'] = (V1, V2, V3, V4)
+    return D
 
 
-
-
+def getColor(favoriteColors, name):
+    """
+    Requires: favoriteColors is a dictionary and name is a key in
+              favoriteColors
+    Modifies: Nothing
+    Effects:  Returns the first element in the list associated with the
+              key "name" in the input dictionary favoriteColors.
+    """
+    favoriteColors = {'name' : 'value'}
+    return favoriteColors['name']
 
 def asciiAssociate():
     """
@@ -69,12 +98,6 @@ def asciiAssociate():
     return asciiDict
     
 
-
-
-
-
-# In[103]:
-
 def translate(vocab, word, language):
     """
     Requires: vocab is a 2-dimensional dictionary, word is a key in vocab,
@@ -87,9 +110,6 @@ def translate(vocab, word, language):
     """
               
     return vocab[word][language]
-
-
-
 
 def nestedDictionary():
     """
@@ -108,13 +128,21 @@ def nestedDictionary():
         D[key] = {}
     return D
 
+def nestedDictionary3D(L1, L2):
+    """
+    Requires: L1 and L2 are lists
+    Modifies: Nothing
+    Effects:  Creates a 3D dictionary, D, with keys of each item of list L1.
+              The value for each key in D is a dictionary, which
+              has keys of each item of list L2 and corresponding
+              values of empty dictionaries. Returns the new dictionary D.
+    """
+    temp = {}
+    temp = dict.fromkeys(L2,"")
+    D = dict.fromkeys(L1, temp)
 
-# In[76]:
-
-
-
-
-# In[77]:
+    
+    return
 
 def valueFrom3D(D, K1, K2, K3):
     """
@@ -127,13 +155,8 @@ def valueFrom3D(D, K1, K2, K3):
               in that order.
     """
     
-    return D[K1[K2[K3]]]
-    
-D = {'K1':{'K2':{'K3':'value'}}}
+    return D[K1][K2][K3]
 
-
-
-# In[88]:
 
 def keysIn2D(D, L1, L2):
     """
@@ -145,13 +168,13 @@ def keysIn2D(D, L1, L2):
               item of list L2 as a key.
     """
     # Last item of L1: L1[len(L1)-1]
-    if L1[len(L1)-1] in D.keys():
-        temp1 =  L1[len(L1)-1]
-        if L2[len(L2)-1] in D[L1[len(L1)-1]].keys():
+    if L1[len(L1)-1] in D:
+        if L2[len(L2)-1] in D[L1[len(L1)-1]]:
             return True
-
-
-# In[ ]:
+        else:
+            return False
+    else:
+        return False
 
 
 
