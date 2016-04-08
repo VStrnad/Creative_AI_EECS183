@@ -35,17 +35,20 @@ class TrigramModel(NGramModel):
                   symbols to be included as their own tokens in
                   self.nGramCounts. For more details, see the spec.
         """
-        
         triDict = {}
         for i in range(len(text)):
             for j in range(len(text[i]) - 2):
                 if text[i][j] != '^::^':
                     if text[i][j] in triDict:
                         if text[i][j + 1] in triDict[text[i][j]]:
-                            if text[i][j + 2] in tricDict[text[i][j]][text[i][j + 1]]:
+                            if text[i][j + 2] in triDict[text[i][j]][text[i][j + 1]]:
                                 triDict[text[i][j]][text[i][j + 1]][text[i][j + 2]] += 1
+                            else:
+                                triDict[text[i][j]][text[i][j + 1]][text[i][j + 2]] = 1
+                        else:
+                            triDict[text[i][j]][text[i][j + 1]] = {text[i][j + 2]: 1}
                     else:
-                        dict11[text[i][j]] = {text[i][j + 1]: {text[i][j + 2]: 1}}
+                        triDict[text[i][j]] = {text[i][j + 1]: {text[i][j + 2]: 1}}
         return triDict
 
     def trainingDataHasNGram(self, sentence):
