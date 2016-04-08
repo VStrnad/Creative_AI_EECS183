@@ -66,6 +66,7 @@ class TrigramModel(NGramModel):
                 return False
         else:
             return False
+            
     def getCandidateDictionary(self, sentence):
         """
         Requires: sentence is a list of strings, and trainingDataHasNGram
