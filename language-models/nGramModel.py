@@ -47,18 +47,13 @@ class NGramModel(object):
                   parameter in this function.
         """
         textCopy = []
-
         import copy
-        textcopy = copy.deepcopy(text)
-        rows = len(textcopy)
-        cols = len(textcopy[0])
-        for row in textcopy:
-            row.insert(0, '^::^')
-            row.insert(0, '^::^')
-            row.insert(len(row),'$:::$')
-
-        # add the rest of your prepData implementation here
-
+        textCopy = copy.deepcopy(text)
+        rows = len(textCopy)
+        for i in range(rows):
+            textCopy[i].insert(0, '^:::^')
+            textCopy[i].insert(0, '^::^')
+            textCopy[i].insert(len(textCopy[i]),'$:::$')
         return textCopy
 
     def trainModel(self, text):
@@ -112,10 +107,13 @@ class NGramModel(object):
             count.append(candidates[keyname])
         # creat a third list
         cumulative = []
-        cumulative.append(count[0])
-        for i in range(1,len(count)):
-            cumulative.append(cumulative[i - 1] + count[i])
-        random_number = random.randrange(0, cumulative[len(cumulative) - 1])
+        if count != []:
+            cumulative.append(count[0])
+            for i in range(1,len(count)):
+                cumulative.append(cumulative[i - 1] + count[i])
+        else:
+            return
+        random_number = random.randrange(0, cumulative[- 1])
         # find the index of the value and return the coresponding token
         for i in cumulative:
             if i > random_number:
@@ -131,7 +129,7 @@ class NGramModel(object):
                   For more information on how to put all these functions
                   together, see the spec.
         """
-        return weightedChoice(getCandidateDictionary(sentence))
+        return self.weightedChoice(self.getCandidateDictionary(sentence))
 
     def getNextNote(self, musicalSentence, possiblePitches):
         """
@@ -157,7 +155,11 @@ class NGramModel(object):
 if __name__ == '__main__':
     text = [ ['the', 'quick', 'brown', 'fox'], ['the', 'lazy', 'dog'] ]
     choices = { 'the': 2, 'quick': 1, 'brown': 1 }
+    sentence = ['the']
     nGramModel = NGramModel()
     # add your own testing code here if you like
+    print nGramModel.prepData(text)
+    print nGramModel.weightedChoice(choices)
+    print nGramModel.getNextToken(sentence)
 
-
+    
