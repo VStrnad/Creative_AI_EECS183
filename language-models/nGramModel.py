@@ -78,6 +78,7 @@ class NGramModel(object):
                   you will override it in NGramModel child classes according
                   to the spec.
         """
+        
         return False
 
     def getCandidateDictionary(self, sentence):
@@ -118,6 +119,7 @@ class NGramModel(object):
         for i in cumulative:
             if i > random_number:
                 return token[cumulative.index(i)]
+        return token[-1]
 
     def getNextToken(self, sentence):
         """
