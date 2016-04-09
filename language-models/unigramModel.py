@@ -35,14 +35,11 @@ class UnigramModel(NGramModel):
                   self.nGramCounts. For more details, see the spec.
         """
         text = self.prepData(text)
-        for i in range(len(text)):
-            for j in range(len(text[i])):
-                if text[i][j] != '^::^':
-                    if text[i][j] != '^:::^':
-                        if text[i][j] in self.nGramCounts:
-                            self.nGramCounts[text[i][j]] += 1
-                        else:
-                            self.nGramCounts[text[i][j]] = 1
+        for sentence in text:
+            for j in range(2,len(sentence)):
+                if sentence[j] not in self.nGramCounts:
+                    self.nGramCounts[sentence[j]] = 0
+                self.nGramCounts[sentence[j]] += 1
         return self.nGramCounts
 
     def trainingDataHasNGram(self, sentence):
