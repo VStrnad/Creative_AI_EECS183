@@ -36,10 +36,18 @@ class TrigramModel(NGramModel):
                   self.nGramCounts. For more details, see the spec.
         """
         text = self.prepData(text)
-        for i in range(len(text)):
-            for j in range(len(text[i]) - 2):
-                if text[i][j] in self.nGramCounts:
-                    if text[i][j + 1] in self.nGramCounts[text[i][j]]:
+        for sentence in text:
+            for j in range(len(sentence) - 2):
+                if sentence[j] not in self.nGramCounts:
+                    self.nGramCounts[sentence[j]] = {}
+                if sentence[j + 1] not in self.nGramCounts[sentence[j]]:
+                    self.nGramCounts[sentence[j]][sentence[j + 1]] = {}
+                if sentence[j + 2] not in self.nGramCounts[sentence[j]][sentence[j + 1]]:
+                    self.nGramCounts[sentence[j]][sentence[j + 1]][sentence[j + 2]] = 0
+                self.nGramCounts[sentence[j]][sentence[j + 1]][sentence[j + 2]] += 1
+                '''
+                if i[j] in self.nGramCounts:
+                    if i[j + 1] in self.nGramCounts[text[i][j]]:
                         if text[i][j + 2] in self.nGramCounts[text[i][j]][text[i][j + 1]]:
                             self.nGramCounts[text[i][j]][text[i][j + 1]][text[i][j + 2]] += 1
                         else:
@@ -48,6 +56,7 @@ class TrigramModel(NGramModel):
                         self.nGramCounts[text[i][j]][text[i][j + 1]] = {text[i][j + 2]: 1}
                 else:
                     self.nGramCounts[text[i][j]] = {text[i][j + 1]: {text[i][j + 2]: 1}}
+                '''
         return self.nGramCounts
 
     def trainingDataHasNGram(self, sentence):
