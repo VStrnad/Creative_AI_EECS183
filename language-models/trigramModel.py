@@ -35,21 +35,20 @@ class TrigramModel(NGramModel):
                   symbols to be included as their own tokens in
                   self.nGramCounts. For more details, see the spec.
         """
-        triDict = {}
+        text = self.prepData(text)
         for i in range(len(text)):
             for j in range(len(text[i]) - 2):
-                if text[i][j] != '^::^':
-                    if text[i][j] in triDict:
-                        if text[i][j + 1] in triDict[text[i][j]]:
-                            if text[i][j + 2] in triDict[text[i][j]][text[i][j + 1]]:
-                                triDict[text[i][j]][text[i][j + 1]][text[i][j + 2]] += 1
-                            else:
-                                triDict[text[i][j]][text[i][j + 1]][text[i][j + 2]] = 1
+                if text[i][j] in self.nGramCounts:
+                    if text[i][j + 1] in self.nGramCounts[text[i][j]]:
+                        if text[i][j + 2] in self.nGramCounts[text[i][j]][text[i][j + 1]]:
+                            self.nGramCounts[text[i][j]][text[i][j + 1]][text[i][j + 2]] += 1
                         else:
-                            triDict[text[i][j]][text[i][j + 1]] = {text[i][j + 2]: 1}
+                            self.nGramCounts[text[i][j]][text[i][j + 1]][text[i][j + 2]] = 1
                     else:
-                        triDict[text[i][j]] = {text[i][j + 1]: {text[i][j + 2]: 1}}
-        return triDict
+                        self.nGramCounts[text[i][j]][text[i][j + 1]] = {text[i][j + 2]: 1}
+                else:
+                    self.nGramCounts[text[i][j]] = {text[i][j + 1]: {text[i][j + 2]: 1}}
+        return self.nGramCounts
 
     def trainingDataHasNGram(self, sentence):
         """
@@ -59,8 +58,8 @@ class TrigramModel(NGramModel):
                   the next token for the sentence. For explanations of how this
                   is determined for the TrigramModel, see the spec.
         """
-        if sentence[len(sentece) - 2] in self.nGramCounts:
-            if sentence[len(sentece) - 1] in self.nGramCounts[sentence[len(sentece) - 2]]:
+        if sentence[- 2] in self.nGramCounts:
+            if sentence[- 1] in self.nGramCounts[sentence[- 2]]:
                 return True
             else:
                 return False
@@ -76,7 +75,7 @@ class TrigramModel(NGramModel):
                   to the current sentence. For details on which words the
                   TrigramModel sees as candidates, see the spec.
         """
-        return self.nGramCounts[sentence[len(sentece) - 2]][sentence[len(sentece) - 1]]
+        return self.nGramCounts[sentence[-2]][sentence[-1]]
 
 
 # -----------------------------------------------------------------------------
@@ -87,5 +86,8 @@ if __name__ == '__main__':
     sentence = [ 'the', 'quick', 'brown' ]
     trigramModel = TrigramModel()
     # add your own testing code here if you like
+    print trigramModel.trainModel(text)
+    print trigramModel.trainingDataHasNGram(sentence)
+    print trigramModel.getCandidateDictionary(sentence)
 
 
