@@ -32,6 +32,15 @@ def trainLyricsModels(lyricsDirectory):
     dataLoader = DataLoader()
     dataLoader.loadLyrics(lyricsDirectory) # lyrics stored in dataLoader.lyrics
     models = [TrigramModel(), BigramModel(), UnigramModel()]
+    trigramModel = TrigramModel()
+    bigramModel = BigramModel()
+    unigramModel = UnigramModel()
+    # train model
+    trigramModel.trainModel(dataLoader.lyrics)
+    bigramModel.trainModel(dataLoader.lyrics)
+    unigramModel.trainModel(dataLoader.lyrics)
+    
+    models = [trigramModel, bigramModel, unigramModel]
     return models
 
 def selectNGramModel(models, sentence):
@@ -78,11 +87,12 @@ def generateSentence(models, desiredLength):
         NGramModels, see the spec.
     """
     sentence = ['^::^', '^:::^']
-    modelSelected = selectNGramModel(models, sentence)
-    while sentenceTooLong(5, len(sentence)) == False or modelSelected.nexttoken !=  '$::$':
-        sentence.append(modelSelected.getNextToken)
-    sentence.remove('^::^')
-    sentence.remove('^:::^')
+    while not sentenceTooLong(desiredLength, len(sentence) - 2) and sentence[-1] !=  '$::$':
+        modelSelected = selectNGramModel(models, sentence)
+        sentence.append(modelSelected.getNextToken(sentence))
+    sentence.pop(0)
+    sentence.pop(0)
+    sentence.pop(-1)
     return sentence
 
 def printSongLyrics(verseOne, verseTwo, chorus):
@@ -108,17 +118,13 @@ def runLyricsGenerator(models):
     verseOne = []
     verseTwo = []
     chorus = []
-
-
-    for i in range(4):
-        verseOne[i] = generateSentence(models, 5)
-
-    for i in range(4):
-        verseTwo[i] = generateSentence(models, 5)
-
-    for i in range(4):
-        chorus[i] = generateSentence(models, 5)
-
+    i = 0
+    for i in xrange(4):
+        verseOne[i] = generateSentence(models, 7)
+    for i in xrange(4):
+        verseTwo[i] = generateSentence(models, 7)
+    for i in xrange(4):
+        chorus[i] = generateSentence(models, 7)
     printSongLyrics(verseOne,verseTwo,chorus)
 
 
@@ -260,4 +266,3 @@ if __name__ == '__main__':
     a = UnigramModel()
     runLyricsGenerator(a)
     """
-
