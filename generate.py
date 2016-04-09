@@ -54,9 +54,9 @@ def selectNGramModel(models, sentence):
         wrote a function that checks if a model can be used to pick a
         word for a sentence!)
     """
-    if models[0].trainingDataHasNGram:
+    if models[0].trainingDataHasNGram(sentence):
         return models[0]
-    elif models[1].trainingDataHasNGram:
+    elif models[1].trainingDataHasNGram(sentence):
         return models[1]
     else:
         return models[2]
@@ -87,13 +87,15 @@ def generateSentence(models, desiredLength):
         NGramModels, see the spec.
     """
     sentence = ['^::^', '^:::^']
-    while not sentenceTooLong(desiredLength, len(sentence) - 2) and sentence[-1] !=  '$::$':
+    grabbedToken = ''
+    while sentenceTooLong(desiredLength, len(sentence) - 2) == False and grabbedToken !=  '$:::$':
         modelSelected = selectNGramModel(models, sentence)
-        sentence.append(modelSelected.getNextToken(sentence))
-    sentence.pop(0)
-    sentence.pop(0)
-    sentence.pop(-1)
-    return sentence
+        grabbedToken = modelSelected.getNextToken(sentence)
+        sentence.append(grabbedToken)
+    if grabbedToken == '$:::$':
+        return sentence[2: - 1]
+    else:
+        return sentence[2: ]
 
 def printSongLyrics(verseOne, verseTwo, chorus):
     """
@@ -119,12 +121,11 @@ def runLyricsGenerator(models):
     verseTwo = []
     chorus = []
     i = 0
-    for i in xrange(4):
-        verseOne[i] = generateSentence(models, 7)
-    for i in xrange(4):
-        verseTwo[i] = generateSentence(models, 7)
-    for i in xrange(4):
-        chorus[i] = generateSentence(models, 7)
+    for i in range(4):
+        verseOne.append(generateSentence(models, 7))
+        verseTwo.append(generateSentence(models, 7))
+        chorus.append(generateSentence(models, 7))
+        
     printSongLyrics(verseOne,verseTwo,chorus)
 
 
@@ -266,3 +267,4 @@ if __name__ == '__main__':
     a = UnigramModel()
     runLyricsGenerator(a)
     """
+
