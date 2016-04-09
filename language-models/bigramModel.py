@@ -35,18 +35,17 @@ class BigramModel(NGramModel):
                   symbols to be included as their own tokens in
                   self.nGramCounts. For more details, see the spec.
         """
-        biDict = {}
+        text = self.prepData(text)
         for i in range(len(text)):
             for j in range(len(text[i]) - 1):
-                if text[i][j] != '^::^':
-                    if text[i][j] in biDict:
-                        if text[i][j + 1] in biDict[text[i][j]]:
-                            biDict[text[i][j]][text[i][j + 1]] += 1
-                        else:
-                            biDict[text[i][j]][text[i][j + 1]] = 1
+                if text[i][j] in self.nGramCounts:
+                    if text[i][j + 1] in self.nGramCounts[text[i][j]]:
+                        self.nGramCounts[text[i][j]][text[i][j + 1]] += 1
                     else:
-                        biDict[text[i][j]][text[i][j + 1]] = 1
-        return biDict
+                        self.nGramCounts[text[i][j]][text[i][j + 1]] = 1
+                else:
+                    self.nGramCounts[text[i][j]] = {text[i][j + 1]: 1}
+        return self.nGramCounts
 
     def trainingDataHasNGram(self, sentence):
         """
@@ -56,7 +55,7 @@ class BigramModel(NGramModel):
                   the next token for the sentence. For explanations of how this
                   is determined for the BigramModel, see the spec.
         """
-        if sentence[len(sentence) - 1] in self.nGramCounts:
+        if sentence[- 1] in self.nGramCounts:
             return True
         else:
             return False
@@ -70,7 +69,7 @@ class BigramModel(NGramModel):
                   to the current sentence. For details on which words the
                   BigramModel sees as candidates, see the spec.
         """
-        return self.nGramCounts[sentence[len(sentence)-1]]
+        return self.nGramCounts[sentence[-1]]
     
             
 
@@ -81,8 +80,11 @@ class BigramModel(NGramModel):
 if __name__ == '__main__':
     text = [ ['the', 'quick', 'brown', 'fox'], ['the', 'lazy', 'dog'] ]
     text.append([ 'quick', 'brown' ])
+    print text
     sentence = [ 'lazy', 'quick' ]
     bigramModel = BigramModel()
     # add your own testing code here if you like
-
+    print bigramModel.trainModel(text)
+    print bigramModel.trainingDataHasNGram(sentence)
+    print bigramModel.getCandidateDictionary(sentence)
 
