@@ -36,15 +36,13 @@ class BigramModel(NGramModel):
                   self.nGramCounts. For more details, see the spec.
         """
         text = self.prepData(text)
-        for i in range(len(text)):
-            for j in range(len(text[i]) - 1):
-                if text[i][j] in self.nGramCounts:
-                    if text[i][j + 1] in self.nGramCounts[text[i][j]]:
-                        self.nGramCounts[text[i][j]][text[i][j + 1]] += 1
-                    else:
-                        self.nGramCounts[text[i][j]][text[i][j + 1]] = 1
-                else:
-                    self.nGramCounts[text[i][j]] = {text[i][j + 1]: 1}
+        for sentence in text:
+            for j in range(len(sentence) - 1):
+                if sentence[j] not in self.nGramCounts:
+                    self.nGramCounts[sentence[j]] = {}
+                if sentence[j + 1] not in self.nGramCounts[sentence[j]]:
+                    self.nGramCounts[sentence[j]][sentence[j + 1]] = 0
+                self.nGramCounts[sentence[j]][sentence[j + 1]] += 1
         return self.nGramCounts
 
     def trainingDataHasNGram(self, sentence):
