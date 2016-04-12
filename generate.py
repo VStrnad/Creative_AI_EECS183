@@ -183,7 +183,12 @@ def runMusicGenerator(models, songName):
         
         Note: For the core, this should print "Under construction".
         """
-    print 'Under construction'
+    possiblePitches = KEY_SIGNATURES[random.choice(KEY_SIGNATURES.keys())]
+    song = generateMusicalSentence(models,100, possiblePitches)
+    pysynth.make_wav(song, fn = "TestSong")
+
+
+
 
 
 
