@@ -171,7 +171,16 @@ def generateMusicalSentence(models, desiredLength, possiblePitches):
         """
     sentence = ['^::^', '^:::^']
     
-    # add rest of generateMusicalSentence implementation here
+    sentence = ['^::^', '^:::^']
+    grabbedToken = ''
+    while sentenceTooLong(desiredLength, len(sentence) - 2) == False and grabbedToken !=  '$:::$':
+        modelSelected = selectNGramModel(models, sentence)
+        grabbedToken = modelSelected.getNextNote(self,musicalSentence,possiblePitches)
+        sentence.append(grabbedToken)
+    if grabbedToken == '$:::$':
+        return sentence[2: - 1]
+    else:
+        return sentence[2: ]
     
     return sentence
 
