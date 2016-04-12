@@ -147,7 +147,19 @@ class NGramModel(object):
 
                   Please note that this function is for the reach only.
         """
-        return ()
+        allCandidates = self.getCandidateDictionary(musicalSentence)
+        constrainedCandidates = {}
+        for key in allCandidates:
+            noNumPitch = ''.join(i for i in key[0] if not i.isdigit())
+            if noNumPitch == '$:::$' or noNumPitch in possiblePitches:
+                    constrainedCandidates[key] = allCandidates[key]
+
+        if constrainedCandidates == {}:
+            pitch = random.choice(possiblePitches) + '4'
+            duration = random.choice(NOTE_DURATIONS)
+            return (pitch, duration)
+        else:
+            return self.weightedChoice(constrainedCandidates)
 
 
 
