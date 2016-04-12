@@ -149,8 +149,14 @@ def trainMusicModels(musicDirectory):
     dataLoader = DataLoader()
     dataLoader.loadMusic(musicDirectory) # music stored in dataLoader.songs
     models = [TrigramModel(), BigramModel(), UnigramModel()]
-    
-    # add rest of trainMusicModels implementation here
+    dataLoader = DataLoader()
+    trigramModel = TrigramModel()
+    bigramModel = BigramModel()
+    unigramModel = UnigramModel()
+    # train model
+    trigramModel.trainModel(dataLoader.songs)
+    bigramModel.trainModel(dataLoader.songs)
+    unigramModel.trainModel(dataLoader.songs)
     
     return models
 
