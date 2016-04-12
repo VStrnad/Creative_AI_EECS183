@@ -195,7 +195,7 @@ def runMusicGenerator(models, songName):
         """
     possiblePitches = KEY_SIGNATURES[random.choice(KEY_SIGNATURES.keys())]
     song = generateMusicalSentence(models,100, possiblePitches)
-    pysynth.make_wav(song, fn = "TestSong")
+    pysynth.make_wav(song, fn = songName)
 
 
 
