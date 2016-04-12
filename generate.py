@@ -170,17 +170,18 @@ def generateMusicalSentence(models, desiredLength, possiblePitches):
         should be exactly the same as the core.
         """
     sentence = ['^::^', '^:::^']
-    
-    sentence = ['^::^', '^:::^']
-    grabbedToken = ''
-    while sentenceTooLong(desiredLength, len(sentence) - 2) == False and grabbedToken !=  '$:::$':
+
+    # add rest of generateMusicalSentence implementation here
+    while sentenceTooLong(desiredLength, len(sentence) - 2) == False and grabbedNote !=  '$:::$':
         modelSelected = selectNGramModel(models, sentence)
-        grabbedToken = modelSelected.getNextNote(self,musicalSentence,possiblePitches)
-        sentence.append(grabbedToken)
-    if grabbedToken == '$:::$':
+        grabbedNote = modelSelected.getNextNote(sentence, possiblePitches)
+        sentence.append(grabbedNote)
+    if grabbedNote == '$:::$':
         return sentence[2: - 1]
     else:
         return sentence[2: ]
+
+    return sentence
     
     return sentence
 
