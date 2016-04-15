@@ -149,7 +149,6 @@ def trainMusicModels(musicDirectory):
     dataLoader = DataLoader()
     dataLoader.loadMusic(musicDirectory) # music stored in dataLoader.songs
     models = [TrigramModel(), BigramModel(), UnigramModel()]
-    dataLoader = DataLoader()
     trigramModel = TrigramModel()
     bigramModel = BigramModel()
     unigramModel = UnigramModel()
@@ -171,19 +170,76 @@ def generateMusicalSentence(models, desiredLength, possiblePitches):
         """
     sentence = ['^::^', '^:::^']
     grabbedNote = ()
-    # add rest of generateMusicalSentence implementation here
-    while sentenceTooLong(desiredLength, len(sentence) - 2) == False and grabbedNote !=  '$:::$':
-        modelSelected = selectNGramModel(models, sentence)
-        grabbedNote = modelSelected.getNextNote(sentence, possiblePitches)
-        sentence.append(grabbedNote)
+    if songSpeed == 1:
+        while sentenceTooLong(desiredLength, len(sentence) - 2) == False and grabbedNote !=  '$:::$':
+            modelSelected = selectNGramModel(models, sentence)
+            if sentence[-1] != '^:::^':
+                lastWord = sentence[-1]
+                note = ''.join(i for i in lastWord[0] if not i.isdigit())
+                center = possiblePitches.index(note)
+                lowerBound = max(0, center - 2)
+                upperBound = min(center + 2, len(possiblePitches) - 1)
+                newPossiblePitches = possiblePitches[lowerBound: upperBound + 1]
+                grabbedNote = modelSelected.getSlowNote(sentence, newPossiblePitches)
+                sentence.append(grabbedNote)
+            else:
+                grabbedNote = modelSelected.getSlowNote(sentence, possiblePitches)
+                sentence.append(grabbedNote)
+    elif songSpeed == 2:
+        while sentenceTooLong(desiredLength, len(sentence) - 2) == False and grabbedNote !=  '$:::$':
+            modelSelected = selectNGramModel(models, sentence)
+            if sentence[-1] != '^:::^':
+                lastWord = sentence[-1]
+                note = ''.join(i for i in lastWord[0] if not i.isdigit())
+                center = possiblePitches.index(note)
+                lowerBound = max(0, center - 2)
+                upperBound = min(center + 2, len(possiblePitches) - 1)
+                newPossiblePitches = possiblePitches[lowerBound: upperBound + 1]
+                print newPossiblePitches
+                grabbedNote = modelSelected.getMediumNote(sentence, newPossiblePitches)
+                sentence.append(grabbedNote)
+            else:
+                grabbedNote = modelSelected.getMediumNote(sentence, possiblePitches)
+                sentence.append(grabbedNote)
+    elif songSpeed == 3:
+        while sentenceTooLong(desiredLength, len(sentence) - 2) == False and grabbedNote !=  '$:::$':
+            modelSelected = selectNGramModel(models, sentence)
+            if sentence[-1] != '^:::^':
+                lastWord = sentence[-1]
+                note = ''.join(i for i in lastWord[0] if not i.isdigit())
+                center = possiblePitches.index(note)
+                lowerBound = max(0, center - 2)
+                upperBound = min(center + 2, len(possiblePitches) - 1)
+                newPossiblePitches = possiblePitches[lowerBound: upperBound + 1]
+                grabbedNote = modelSelected.getFastNote(sentence, newPossiblePitches)
+                sentence.append(grabbedNote)
+            else:
+                grabbedNote = modelSelected.getFastNote(sentence, possiblePitches)
+                sentence.append(grabbedNote)         
+    else:
+        while sentenceTooLong(desiredLength, len(sentence) - 2) == False and grabbedNote !=  '$:::$':
+            modelSelected = selectNGramModel(models, sentence)
+            if sentence[-1] != '^:::^':
+                lastWord = sentence[-1]
+                note = ''.join(i for i in lastWord[0] if not i.isdigit())
+                center = possiblePitches.index(note)
+                lowerBound = max(0, center - 2)
+                upperBound = min(center + 2, len(possiblePitches) - 1)
+                newPossiblePitches = possiblePitches[lowerBound: upperBound + 1]
+                print newPossiblePitches
+                grabbedNote = modelSelected.getNextNote(sentence, newPossiblePitches)
+                sentence.append(grabbedNote)
+            else:
+                grabbedNote = modelSelected.getNextNote(sentence, possiblePitches)
+                sentence.append(grabbedNote)
+    
     if grabbedNote == '$:::$':
+        print sentence
         return sentence[2: - 1]
     else:
+        print sentence
         return sentence[2: ]
-
-    return sentence
     
-    return sentence
 
 def runMusicGenerator(models, songName):
     """
@@ -192,9 +248,10 @@ def runMusicGenerator(models, songName):
         Effects:  runs the music generator as following the details in the spec.
         
         Note: For the core, this should print "Under construction".
-        """
+    """
     possiblePitches = KEY_SIGNATURES[random.choice(KEY_SIGNATURES.keys())]
-    song = generateMusicalSentence(models,100, possiblePitches)
+    print possiblePitches
+    song = generateMusicalSentence(models,50, possiblePitches)
     pysynth.make_wav(song, fn = songName)
 
 
@@ -251,7 +308,7 @@ def main():
               Also note that you can change the values of the first five
               variables based on your team's name, artist name, etc.
     """
-    teamName = 'Team Name'
+    teamName = 'Deep Blue'
     lyricsSource = 'The Beatles'
     musicSource = 'Nintendo Gamecube'
     lyricsDirectory = 'the_beatles'
@@ -269,6 +326,9 @@ def main():
         if userInput == 1:
             runLyricsGenerator(lyricsModels)
         elif userInput == 2:
+            global songSpeed
+            songSpeed = int(raw_input('Please choose a speed between 1 and 3: '))
+                
             songName = raw_input('What would you like to name your song? ')
             runMusicGenerator(musicModels, 'wav/' + songName + '.wav')
 

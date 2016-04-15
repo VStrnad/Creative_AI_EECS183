@@ -27,3 +27,6 @@ KEY_SIGNATURES = {
 
 # List of PySynth note durations
 NOTE_DURATIONS = [1, 2, -2, 4, -4, 8, -8, 16]
+FAST_NOTE_DURATIONS = [8, -8, 16]
+MEDIUM_NOTE_DURATIONS = [2, -2, 4, -4, 8, -8]
+SLOW_NOTE_DURATIONS = [1, -2, 2, 4, -4]

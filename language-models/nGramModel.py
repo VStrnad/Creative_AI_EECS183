@@ -148,18 +148,76 @@ class NGramModel(object):
                   Please note that this function is for the reach only.
         """
         allCandidates = self.getCandidateDictionary(musicalSentence)
+        constrainedCandidates = {}        
+        for key in allCandidates:
+            noNumPitch = ''.join(i for i in key[0] if not i.isdigit())
+            if noNumPitch == '$:::$' or noNumPitch in possiblePitches:
+                    constrainedCandidates[key] = allCandidates[key]
+                    
+        if constrainedCandidates == {}:
+            pitch = random.choice(possiblePitches) + '4'
+            duration = random.choice(FAST_NOTE_DURATIONS)
+            return (pitch, duration)
+        else:
+            for key in constrainedCandidates:
+                temp = random.choice(FAST_NOTE_DURATIONS)
+                key = (key[0], temp)
+            return self.weightedChoice(constrainedCandidates)
+
+    def getFastNote(self, musicalSentence, possiblePitches):
+        allCandidates = self.getCandidateDictionary(musicalSentence)
         constrainedCandidates = {}
         for key in allCandidates:
             noNumPitch = ''.join(i for i in key[0] if not i.isdigit())
             if noNumPitch == '$:::$' or noNumPitch in possiblePitches:
                     constrainedCandidates[key] = allCandidates[key]
-
+                    
         if constrainedCandidates == {}:
             pitch = random.choice(possiblePitches) + '4'
-            duration = random.choice(NOTE_DURATIONS)
+            duration = random.choice(FAST_NOTE_DURATIONS)
             return (pitch, duration)
         else:
+            for key in constrainedCandidates:
+                temp = random.choice(FAST_NOTE_DURATIONS)
+                key = (key[0], temp)
             return self.weightedChoice(constrainedCandidates)
+
+    def getMediumNote(self, musicalSentence, possiblePitches):
+        allCandidates = self.getCandidateDictionary(musicalSentence)
+        constrainedCandidates = {}
+        for key in allCandidates:
+            noNumPitch = ''.join(i for i in key[0] if not i.isdigit())
+            if noNumPitch == '$:::$' or noNumPitch in possiblePitches:
+                    constrainedCandidates[key] = allCandidates[key]
+                    
+        if constrainedCandidates == {}:
+            pitch = random.choice(possiblePitches) + '4'
+            duration = random.choice(MEDIUM_NOTE_DURATIONS)
+            return (pitch, duration)
+        else:
+            for key in constrainedCandidates:
+                temp = random.choice(MEDIUM_NOTE_DURATIONS)
+                key = (key[0], temp)
+            return self.weightedChoice(constrainedCandidates)
+
+    def getSlowNote(self, musicalSentence, possiblePitches):
+        allCandidates = self.getCandidateDictionary(musicalSentence)
+        constrainedCandidates = {}
+        for key in allCandidates:
+            noNumPitch = ''.join(i for i in key[0] if not i.isdigit())
+            if noNumPitch == '$:::$' or noNumPitch in possiblePitches:
+                    constrainedCandidates[key] = allCandidates[key]
+                    
+        if constrainedCandidates == {}:
+            pitch = random.choice(possiblePitches) + '4'
+            duration = random.choice(SLOW_NOTE_DURATIONS)
+            return (pitch, duration)
+        else:
+            for key in constrainedCandidates:
+                temp = random.choice(SLOW_NOTE_DURATIONS)
+                key = (key[0], temp)
+            return self.weightedChoice(constrainedCandidates)
+        
 
 
 
