@@ -8,5 +8,6 @@
 
 - <a href="https://github.com/eecs183/creative-ai/wiki" target="_blank">Link to specification</a>
 1. Option 1 is to create random song lyrics based off of Beatles lyrcis. After this option is chosen, the user is presented with the menu again. 
-2. Option 2 is to create random musical notes. After option 2 is selected, the user is then given the option of selecting a song that is at a random speed, slow speed, medium speed, or fast speed. After this option is selected, the user is prompted with the menu again. 
+2. Option 2 is to create random musical notes. After option 2 is selected, the user is then given the option of selecting a song that is at a random speed, slow speed, medium speed, or fast speed. After the speed is chosen, then the user is asked to input the desired name of the song. After this option is selected, the user is prompted with the menu again. The song is then put into the wav file and is found with the given name. 
 3. Option 3 exits the program. 
+4. The program was devloped using windows. 
