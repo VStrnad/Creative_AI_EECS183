@@ -73,6 +73,21 @@ def sentenceTooLong(desiredLength, currentLength):
     val = random.gauss(currentLength, STDEV)
     return val > desiredLength
 
+def musicalSentenceTooLong(sentence, desiredLength):
+    """
+        Requires: nothing
+        Modifies: nothing
+        Effects:  returns a bool indicating whether or not this musical sentence should
+        be ended based on its length.
+    """
+    sentence = sentence[2: ]
+    time = 0
+    for word in sentence:
+        if word != '$:::$':
+            # According to our test, time of the turple = 1.6 / absolute value of duration
+            time += 1.6 / abs(word[1])
+    return time > desiredLength
+
 def generateSentence(models, desiredLength):
     """
         Requires: models is a list of trained NGramModel objects sorted by
@@ -159,6 +174,7 @@ def trainMusicModels(musicDirectory):
     
     return models
 
+
 def generateMusicalSentence(models, desiredLength, possiblePitches):
     """
         Requires: possiblePitches is a list of pitches for a musical key
@@ -170,75 +186,102 @@ def generateMusicalSentence(models, desiredLength, possiblePitches):
         """
     sentence = ['^::^', '^:::^']
     grabbedNote = ()
+    while sentenceTooLong(desiredLength, len(sentence) - 2) == False and grabbedNote !=  '$:::$':
+        modelSelected = selectNGramModel(models, sentence)
+        grabbedNote = modelSelected.getNextNote(sentence, possiblePitches)
+        sentence.append(grabbedNote)
+    if grabbedNote == '$:::$':
+        return sentence[2: - 1]
+    else:
+        return sentence[2: ]
+
+def generateMusic(models, desiredLength, possiblePitches):
+    sentence = ['^::^', '^:::^']
+    grabbedNote = ()
     if songSpeed == 1:
-        while sentenceTooLong(desiredLength, len(sentence) - 2) == False and grabbedNote !=  '$:::$':
+        while musicalSentenceTooLong(sentence, desiredLength) == False and grabbedNote !=  '$:::$':
             modelSelected = selectNGramModel(models, sentence)
             if sentence[-1] != '^:::^':
                 lastWord = sentence[-1]
                 note = ''.join(i for i in lastWord[0] if not i.isdigit())
                 center = possiblePitches.index(note)
-                lowerBound = max(0, center - 2)
-                upperBound = min(center + 2, len(possiblePitches) - 1)
+                lowerBound = max(0, center - 1)
+                upperBound = min(center + 1, len(possiblePitches) - 1)
                 newPossiblePitches = possiblePitches[lowerBound: upperBound + 1]
                 grabbedNote = modelSelected.getSlowNote(sentence, newPossiblePitches)
                 sentence.append(grabbedNote)
             else:
-                grabbedNote = modelSelected.getSlowNote(sentence, possiblePitches)
+                pitch = possiblePitches[0] + '4'
+                duration = random.choice(SLOW_NOTE_DURATIONS)
+                grabbedNote = (pitch, duration)
                 sentence.append(grabbedNote)
+                
     elif songSpeed == 2:
-        while sentenceTooLong(desiredLength, len(sentence) - 2) == False and grabbedNote !=  '$:::$':
+        while musicalSentenceTooLong(sentence, desiredLength) == False and grabbedNote !=  '$:::$':
             modelSelected = selectNGramModel(models, sentence)
             if sentence[-1] != '^:::^':
                 lastWord = sentence[-1]
                 note = ''.join(i for i in lastWord[0] if not i.isdigit())
                 center = possiblePitches.index(note)
-                lowerBound = max(0, center - 2)
-                upperBound = min(center + 2, len(possiblePitches) - 1)
+                lowerBound = max(0, center - 1)
+                upperBound = min(center + 1, len(possiblePitches) - 1)
                 newPossiblePitches = possiblePitches[lowerBound: upperBound + 1]
-                print newPossiblePitches
                 grabbedNote = modelSelected.getMediumNote(sentence, newPossiblePitches)
                 sentence.append(grabbedNote)
             else:
-                grabbedNote = modelSelected.getMediumNote(sentence, possiblePitches)
+                pitch = possiblePitches[0] + '4'
+                duration = random.choice(MEDIUM_NOTE_DURATIONS)
+                grabbedNote = (pitch, duration)
                 sentence.append(grabbedNote)
+                
     elif songSpeed == 3:
-        while sentenceTooLong(desiredLength, len(sentence) - 2) == False and grabbedNote !=  '$:::$':
+        while musicalSentenceTooLong(sentence, desiredLength) == False and grabbedNote !=  '$:::$':
             modelSelected = selectNGramModel(models, sentence)
             if sentence[-1] != '^:::^':
                 lastWord = sentence[-1]
                 note = ''.join(i for i in lastWord[0] if not i.isdigit())
                 center = possiblePitches.index(note)
-                lowerBound = max(0, center - 2)
-                upperBound = min(center + 2, len(possiblePitches) - 1)
+                lowerBound = max(0, center - 1)
+                upperBound = min(center + 1, len(possiblePitches) - 1)
                 newPossiblePitches = possiblePitches[lowerBound: upperBound + 1]
                 grabbedNote = modelSelected.getFastNote(sentence, newPossiblePitches)
                 sentence.append(grabbedNote)
             else:
-                grabbedNote = modelSelected.getFastNote(sentence, possiblePitches)
-                sentence.append(grabbedNote)         
+                pitch = possiblePitches[0] + '4'
+                duration = random.choice(FAST_NOTE_DURATIONS)
+                grabbedNote = (pitch, duration)
+                sentence.append(grabbedNote)
+                
     else:
-        while sentenceTooLong(desiredLength, len(sentence) - 2) == False and grabbedNote !=  '$:::$':
+        while musicalSentenceTooLong(sentence, desiredLength) == False and grabbedNote !=  '$:::$':
             modelSelected = selectNGramModel(models, sentence)
             if sentence[-1] != '^:::^':
                 lastWord = sentence[-1]
                 note = ''.join(i for i in lastWord[0] if not i.isdigit())
                 center = possiblePitches.index(note)
-                lowerBound = max(0, center - 2)
-                upperBound = min(center + 2, len(possiblePitches) - 1)
+                lowerBound = max(0, center - 1)
+                upperBound = min(center + 1, len(possiblePitches) - 1)
                 newPossiblePitches = possiblePitches[lowerBound: upperBound + 1]
-                print newPossiblePitches
                 grabbedNote = modelSelected.getNextNote(sentence, newPossiblePitches)
                 sentence.append(grabbedNote)
             else:
-                grabbedNote = modelSelected.getNextNote(sentence, possiblePitches)
+                pitch = possiblePitches[0] + '4'
+                duration = random.choice(NOTE_DURATIONS)
+                grabbedNote = (pitch, duration)
                 sentence.append(grabbedNote)
     
     if grabbedNote == '$:::$':
-        print sentence
-        return sentence[2: - 1]
+        sentence = sentence[2: - 1]
+        pitch = possiblePitches[0] + '4'
+        duration = random.choice(SLOW_NOTE_DURATIONS)
+        sentence.append((pitch, duration))
+        return sentence
     else:
-        print sentence
-        return sentence[2: ]
+        sentence = sentence[2: ]
+        pitch = possiblePitches[0] + '4'
+        duration = random.choice(SLOW_NOTE_DURATIONS)
+        sentence.append((pitch, duration))
+        return sentence
     
 
 def runMusicGenerator(models, songName):
@@ -250,8 +293,7 @@ def runMusicGenerator(models, songName):
         Note: For the core, this should print "Under construction".
     """
     possiblePitches = KEY_SIGNATURES[random.choice(KEY_SIGNATURES.keys())]
-    print possiblePitches
-    song = generateMusicalSentence(models,50, possiblePitches)
+    song = generateMusic(models,25, possiblePitches)
     pysynth.make_wav(song, fn = songName)
 
 
@@ -275,10 +317,9 @@ def getUserInput(teamName, lyricsSource, musicSource):
         """
     print 'Welcome to the', teamName, 'music generator!\n'
     prompt = 'Here are the menu options:\n' + \
-        '(1) Generate song lyrics by ' + lyricsSource + '\n' \
-            '(2) Generate a song using data from ' + musicSource + '\n' \
-                '(3) Quit the music generator\n'
-    prompt = 'prompt'
+             '(1) Generate song lyrics by ' + lyricsSource + '\n' \
+             '(2) Generate a song using data from ' + musicSource + '\n' \
+             '(3) Quit the music generator\n'
 
     userInput = -1
     while userInput < 1 or userInput > 3:
@@ -327,15 +368,27 @@ def main():
             runLyricsGenerator(lyricsModels)
         elif userInput == 2:
             global songSpeed
-            songSpeed = int(raw_input('Please choose a speed between 1 and 3: '))
-                
+            songSpeed = -1
+            while songSpeed < 0 or songSpeed > 3:
+                prompt = 'Here are the speed options:\n' + \
+                         '(0) Generate a random-speed song ' + '\n' \
+                         '(1) Generate a slow-speed song ' + '\n' \
+                         '(2) Generate a medium-speed song ' + '\n' \
+                         '(3) Generate a fast-speed song ' + '\n'
+                print prompt
+                songSpeed = raw_input('Please choose a speed between 0 and 3: ')
+                print '\n',
+                try:
+                    songSpeed = int(songSpeed)
+                except ValueError:
+                    songSpeed = -1
             songName = raw_input('What would you like to name your song? ')
             runMusicGenerator(musicModels, 'wav/' + songName + '.wav')
 
         print '\n',
         userInput = getUserInput(teamName, lyricsSource, musicSource)
 
-        print '\nThank you for using the', teamName, 'music generator!'
+    print '\nThank you for using the', teamName, 'music generator!'
 
 
 
