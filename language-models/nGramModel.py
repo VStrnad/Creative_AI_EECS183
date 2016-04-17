@@ -156,12 +156,9 @@ class NGramModel(object):
                     
         if constrainedCandidates == {}:
             pitch = random.choice(possiblePitches) + '4'
-            duration = random.choice(FAST_NOTE_DURATIONS)
+            duration = random.choice(NOTE_DURATIONS)
             return (pitch, duration)
         else:
-            for key in constrainedCandidates:
-                temp = random.choice(FAST_NOTE_DURATIONS)
-                key = (key[0], temp)
             return self.weightedChoice(constrainedCandidates)
 
     def getFastNote(self, musicalSentence, possiblePitches):
