@@ -205,8 +205,8 @@ def generateMusic(models, desiredLength, possiblePitches):
                 lastWord = sentence[-1]
                 note = ''.join(i for i in lastWord[0] if not i.isdigit())
                 center = possiblePitches.index(note)
-                lowerBound = max(0, center - 1)
-                upperBound = min(center + 1, len(possiblePitches) - 1)
+                lowerBound = max(0, center - 2)
+                upperBound = min(center + 2, len(possiblePitches) - 1)
                 newPossiblePitches = possiblePitches[lowerBound: upperBound + 1]
                 grabbedNote = modelSelected.getSlowNote(sentence, newPossiblePitches)
                 sentence.append(grabbedNote)
@@ -223,8 +223,8 @@ def generateMusic(models, desiredLength, possiblePitches):
                 lastWord = sentence[-1]
                 note = ''.join(i for i in lastWord[0] if not i.isdigit())
                 center = possiblePitches.index(note)
-                lowerBound = max(0, center - 1)
-                upperBound = min(center + 1, len(possiblePitches) - 1)
+                lowerBound = max(0, center - 2)
+                upperBound = min(center + 2, len(possiblePitches) - 1)
                 newPossiblePitches = possiblePitches[lowerBound: upperBound + 1]
                 grabbedNote = modelSelected.getMediumNote(sentence, newPossiblePitches)
                 sentence.append(grabbedNote)
@@ -241,8 +241,8 @@ def generateMusic(models, desiredLength, possiblePitches):
                 lastWord = sentence[-1]
                 note = ''.join(i for i in lastWord[0] if not i.isdigit())
                 center = possiblePitches.index(note)
-                lowerBound = max(0, center - 1)
-                upperBound = min(center + 1, len(possiblePitches) - 1)
+                lowerBound = max(0, center - 2)
+                upperBound = min(center + 2, len(possiblePitches) - 1)
                 newPossiblePitches = possiblePitches[lowerBound: upperBound + 1]
                 grabbedNote = modelSelected.getFastNote(sentence, newPossiblePitches)
                 sentence.append(grabbedNote)
@@ -259,8 +259,8 @@ def generateMusic(models, desiredLength, possiblePitches):
                 lastWord = sentence[-1]
                 note = ''.join(i for i in lastWord[0] if not i.isdigit())
                 center = possiblePitches.index(note)
-                lowerBound = max(0, center - 1)
-                upperBound = min(center + 1, len(possiblePitches) - 1)
+                lowerBound = max(0, center - 2)
+                upperBound = min(center + 2, len(possiblePitches) - 1)
                 newPossiblePitches = possiblePitches[lowerBound: upperBound + 1]
                 grabbedNote = modelSelected.getNextNote(sentence, newPossiblePitches)
                 sentence.append(grabbedNote)
@@ -273,14 +273,16 @@ def generateMusic(models, desiredLength, possiblePitches):
     if grabbedNote == '$:::$':
         sentence = sentence[2: - 1]
         pitch = possiblePitches[0] + '4'
-        duration = random.choice(SLOW_NOTE_DURATIONS)
+        duration = NOTE_DURATIONS[0]
         sentence.append((pitch, duration))
+        print sentence
         return sentence
     else:
         sentence = sentence[2: ]
         pitch = possiblePitches[0] + '4'
-        duration = random.choice(SLOW_NOTE_DURATIONS)
+        duration = NOTE_DURATIONS[0]
         sentence.append((pitch, duration))
+        print sentence
         return sentence
     
 
