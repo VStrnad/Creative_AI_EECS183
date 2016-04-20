@@ -275,14 +275,12 @@ def generateMusic(models, desiredLength, possiblePitches):
         pitch = possiblePitches[0] + '4'
         duration = NOTE_DURATIONS[0]
         sentence.append((pitch, duration))
-        print sentence
         return sentence
     else:
         sentence = sentence[2: ]
         pitch = possiblePitches[0] + '4'
         duration = NOTE_DURATIONS[0]
         sentence.append((pitch, duration))
-        print sentence
         return sentence
     
 
