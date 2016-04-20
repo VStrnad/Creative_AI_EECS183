@@ -327,6 +327,7 @@ def getUserInput(teamName, lyricsSource, musicSource):
     while userInput < 1 or userInput > 3:
         print prompt
         userInput = raw_input('Please enter a choice between 1 and 3: ')
+        print 'n',
         try:
             userInput = int(userInput)
         except ValueError:
