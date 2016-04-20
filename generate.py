@@ -119,7 +119,6 @@ def printSongLyrics(verseOne, verseTwo, chorus):
         Effects:  prints the song. This function is done for you.
         """
     verses = [verseOne, chorus, verseTwo, chorus]
-    print '\n',
     for verse in verses:
         for line in verse:
             print (' '.join(line)).capitalize()
